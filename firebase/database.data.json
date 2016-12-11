@@ -1,0 +1,21 @@
+{
+  "active" : {
+    "lang" : "en-us"
+  },
+  "l10n" : {
+    "en-us" : [ {
+      "id" : "test0",
+      "innerHTML" : "Hello!"
+    }, {
+      "id" : "test1",
+      "innerHTML" : "How are you?"
+    } ],
+    "zh-Hans" : [ {
+      "id" : "test0",
+      "innerHTML" : "你好！"
+    }, {
+      "id" : "test1",
+      "innerHTML" : "你好吗？"
+    } ]
+  }
+}
