@@ -1,0 +1,8 @@
+<!-- auth bar -->
+<div>
+  <button type="button" class="btn btn-xs btn-link"
+    ng-click="signIn()" ng-hide="firebaseUser">Sign in with Google</button>
+  <span ng-show="firebaseUser">Logged in as {{ firebaseUser.displayName }}</span><br />
+  <button type="button" class="btn btn-xs btn-link"
+    ng-click="signOut()" ng-show="firebaseUser">Sign out</button>
+</div>
