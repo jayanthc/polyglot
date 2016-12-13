@@ -6,33 +6,19 @@
  */
 
 
+// global variable to store list of all i18n-text elements
+var i18nTexts = [];
+
+
 // set the active language
 function setLang(lang) {
-    // change the active language in the Firebase database
     console.log("Setting active language to " + lang);
 
-    var db = firebase.database();
-    db.ref("/active").set({ lang: lang });
-    copyRecord(db.ref("/l10n/" + lang), db.ref("/active/l10n"));
-}
+    // set a cookie
+    document.cookie = "lang=" + lang;
 
-
-// based on https://gist.github.com/katowulf/6099042
-function copyRecord(fromRef, toRef) {
-     fromRef.once("value", function(snapshot)  {
-          toRef.set(snapshot.val(), function(error) {
-               if (error && typeof(console) !== "undefined" && console.error) {
-                   console.error(error);
-               }
-          });
-     });
-}
-
-
-// get the active language
-function getLang() {
-    firebase.database().ref("/active/lang").once("value").then(function(snapshot) {
-        return snapshot.val();
+    i18nTexts.forEach(function(i18nText) {
+        i18nText.reRender(lang);
     });
 }
 
@@ -44,19 +30,34 @@ class I18nText extends HTMLElement {
 
         // get a reference to the database service
         this.db = firebase.database();
+
+        // set the default language
+        if (document.cookie) {
+            // from https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
+            this.activeLang = document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        } else {
+            this.activeLang = "English";
+        }
+
+        i18nTexts.push(this);
     }
 
     connectedCallback() {
         // get the innerHTML from the Firebase database, based on the tag id
-        var langRef = this.db.ref("/active/l10n").orderByKey().equalTo(this.id);
+        var langRef = this.db.ref("/l10n/" + this.activeLang).orderByKey().equalTo(this.id);
         var obj = this;
         langRef.on("value", function(snapshot) {
             console.log(snapshot.val());
             // kludgy fix to TypeError caused during record copy
-            if (snapshot.val()) {
+            //if (snapshot.val()) {
                 obj.innerHTML = snapshot.val()[obj.id].innerHTML;
-            }
+            //}
         });
+    }
+
+    reRender(lang) {
+        this.activeLang = lang;
+        this.connectedCallback();
     }
 }
 window.customElements.define("i18n-text", I18nText);

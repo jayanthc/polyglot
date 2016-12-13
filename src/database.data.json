@@ -1,15 +1,4 @@
 {
-  "active" : {
-    "l10n" : {
-      "test0" : {
-        "innerHTML" : "Hello!"
-      },
-      "test1" : {
-        "innerHTML" : "How are you?"
-      }
-    },
-    "lang" : "English"
-  },
   "l10n" : {
     "Chinese (Simplified)" : {
       "test0" : {
