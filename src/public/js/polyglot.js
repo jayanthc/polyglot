@@ -48,10 +48,7 @@ class I18nText extends HTMLElement {
         var obj = this;
         langRef.on("value", function(snapshot) {
             console.log(snapshot.val());
-            // kludgy fix to TypeError caused during record copy
-            //if (snapshot.val()) {
-                obj.innerHTML = snapshot.val()[obj.id].innerHTML;
-            //}
+            obj.innerHTML = snapshot.val()[obj.id].innerHTML;
         });
     }
 
