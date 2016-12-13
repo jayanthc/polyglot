@@ -6,10 +6,15 @@
  */
 
 
-// set the default language
-//function setLang(lang) {
+// set the active language
+function setLang(lang) {
     // change the active language in the Firebase database
-//}
+    console.log("Setting active language to " + lang);
+
+    var activeLangRef = firebase.database().ref("/active");
+    activeLangRef.set({ lang: lang });
+}
+
 
 // define the internationalized DOM element
 class I18nText extends HTMLElement {
@@ -17,8 +22,8 @@ class I18nText extends HTMLElement {
         super();
 
         // set the default active language
-        //this.activeLang = "English";
-        this.activeLang = "Chinese (Simplified)";
+        this.activeLang = "English";
+        //this.activeLang = "Chinese (Simplified)";
 
         // get a reference to the database service
         this.database = firebase.database();
