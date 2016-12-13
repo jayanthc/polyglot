@@ -1,11 +1,7 @@
 {
   "rules": {
     ".read": true,
-    ".write": "auth != null",
-    "active": {
-      ".read": true,
-      ".write": true
-    }
+    ".write": "auth != null"
   }
 }
 
