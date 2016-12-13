@@ -1,23 +1,31 @@
 {
-    "active": {
-        "lang": "en-us"
+  "active" : {
+    "l10n" : {
+      "test0" : {
+        "innerHTML" : "Hello!"
+      },
+      "test1" : {
+        "innerHTML" : "How are you?"
+      }
     },
-    "l10n": {
-        "English": {
-            "test0": {
-                "innerHTML": "Hello!"
-            },
-            "test1": {
-                "innerHTML": "How are you?"
-            }
-        },
-        "Chinese (Simplified)": {
-            "test0": {
-                "innerHTML": "你好！"
-            },
-            "test1": {
-                "innerHTML" : "你好吗？"
-            }
-        }
+    "lang" : "English"
+  },
+  "l10n" : {
+    "Chinese (Simplified)" : {
+      "test0" : {
+        "innerHTML" : "你好！"
+      },
+      "test1" : {
+        "innerHTML" : "你好吗？"
+      }
+    },
+    "English" : {
+      "test0" : {
+        "innerHTML" : "Hello!"
+      },
+      "test1" : {
+        "innerHTML" : "How are you?"
+      }
     }
+  }
 }

@@ -11,8 +11,29 @@ function setLang(lang) {
     // change the active language in the Firebase database
     console.log("Setting active language to " + lang);
 
-    var activeLangRef = firebase.database().ref("/active");
-    activeLangRef.set({ lang: lang });
+    var db = firebase.database();
+    db.ref("/active").set({ lang: lang });
+    copyRecord(db.ref("/l10n/" + lang), db.ref("/active/l10n"));
+}
+
+
+// based on https://gist.github.com/katowulf/6099042
+function copyRecord(fromRef, toRef) {
+     fromRef.once("value", function(snapshot)  {
+          toRef.set(snapshot.val(), function(error) {
+               if (error && typeof(console) !== "undefined" && console.error) {
+                   console.error(error);
+               }
+          });
+     });
+}
+
+
+// get the active language
+function getLang() {
+    firebase.database().ref("/active/lang").once("value").then(function(snapshot) {
+        return snapshot.val();
+    });
 }
 
 
@@ -21,30 +42,20 @@ class I18nText extends HTMLElement {
 	constructor() {
         super();
 
-        // set the default active language
-        this.activeLang = "English";
-        //this.activeLang = "Chinese (Simplified)";
-
         // get a reference to the database service
-        this.database = firebase.database();
-        // get the active language
-        var obj = this;
-        firebase.database().ref("/active").once("value").then(function(snapshot) {
-            console.log(snapshot.val().lang);
-            obj.activeLang = snapshot.val().lang;
-        });
+        this.db = firebase.database();
     }
 
     connectedCallback() {
-        console.log(this.id);
-        console.log(this.activeLang);
         // get the innerHTML from the Firebase database, based on the tag id
-        var langRef = firebase.database().ref('/l10n/' + this.activeLang).orderByKey().equalTo(this.id);
+        var langRef = this.db.ref("/active/l10n").orderByKey().equalTo(this.id);
         var obj = this;
         langRef.on("value", function(snapshot) {
             console.log(snapshot.val());
-            console.log(snapshot.val()[obj.id].innerHTML);
-            obj.innerHTML = snapshot.val()[obj.id].innerHTML;
+            // kludgy fix to TypeError caused during record copy
+            if (snapshot.val()) {
+                obj.innerHTML = snapshot.val()[obj.id].innerHTML;
+            }
         });
     }
 }
