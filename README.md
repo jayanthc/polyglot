@@ -1,4 +1,4 @@
-## Polyglot
+![Polyglot](/images/logo.png)
 
 Polyglot is a simple internationalization-first content management system built
 on top of Firebase.
