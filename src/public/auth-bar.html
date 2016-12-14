@@ -1,8 +1,8 @@
 <!-- auth bar -->
-<div>
-  <button type="button" class="btn btn-xs btn-link"
+<div id="pAuthBar">
+  <button type="button" class="btn btn-xs btn-link pAuthButton"
     ng-click="signIn()" ng-hide="firebaseUser">Sign in with Google</button>
-  <span ng-show="firebaseUser">Logged in as {{ firebaseUser.displayName }}</span><br />
-  <button type="button" class="btn btn-xs btn-link"
+  <span ng-show="firebaseUser" id="pLoggedInMsg">Logged in as {{ firebaseUser.displayName }}</span><br />
+  <button type="button" class="btn btn-xs btn-link pAuthButton"
     ng-click="signOut()" ng-show="firebaseUser">Sign out</button>
 </div>
