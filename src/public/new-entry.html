@@ -1,5 +1,5 @@
 <!-- new entry -->
-<form ng-show="firebaseUser" ng-submit="submitEntry()">
+<form ng-show="firebaseUser" ng-save="saveEntry()">
   <div class="form-group">
     <label for="pLang">lang</label>
     <select ng-options="key as value for (key, value) in options"
@@ -15,6 +15,6 @@
     <textarea ng-model="innerHTML" id="pInnerHTML" rows="5" maxlength="16384"
       placeholder="Enter innerHTML" required></textarea>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="save" class="btn btn-primary">Save</button>
 </form>
 <div id="pSubmissionStatus"></div>

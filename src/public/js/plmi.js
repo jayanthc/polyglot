@@ -47,7 +47,6 @@
 
     // controllers
 
-    //function AuthenticationController($scope, $firebaseObject, $firebaseArray, Auth, users) {
     function AuthenticationController($scope, Auth) {
         $scope.auth = Auth;
 
@@ -81,14 +80,8 @@
 
     function NewEntryController($scope, $firebaseObject, $firebaseArray, langs) {
         $scope.options = langs;
-        $scope.submitEntry = function() {
-            /*var entry = {
-                //id: $scope.id,
-                innerHTML: $scope.innerHTML
-            };*/
-            //var l10nRef = firebase.database().ref("/l10n/" + $scope.lang);
+        $scope.saveEntry = function() {
             var l10nEntryRef = firebase.database().ref("/l10n/" + $scope.lang + "/" + $scope.id);
-            //var l10n = $firebaseArray(l10nRef);
             var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
                 entry.innerHTML = $scope.innerHTML;
                 entry.$save().then(function(ref) {
@@ -97,11 +90,6 @@
                     $("#pSubmissionStatus").html(error);
                 });
             });
-            /*l10n.$add(entry).then(function(ref) {
-                $("#pSubmissionStatus").html("Entry added.");
-            }).catch(function(error) {
-                $("#pSubmissionStatus").html(error);
-            });*/
         };
     }
 
@@ -121,7 +109,7 @@
         return false;
     });
 
-    $("#submitLang").click(function() {
+    $("#saveLang").click(function() {
         $("#pSubmissionStatus").html("Processing lang...");
         var form = $("#newLangForm");
         if (form[0].checkValidity()) {
@@ -132,7 +120,7 @@
         return false;
     });
 
-    $("#submit").click(function() {
+    $("#save").click(function() {
         $("#pSubmissionStatus").html("Processing...");
         var form = $("#newEntryForm");
         if (form[0].checkValidity()) {
