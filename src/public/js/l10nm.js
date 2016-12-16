@@ -123,19 +123,34 @@
             }
         };
         $scope.saveEntry = function() {
-            // validate language
-            // validate id
-            console.log("saveEntry");
+            console.group("Saving entry");
             var l10nEntryRef = firebase.database().ref("/l10n/" + $scope.lang + "/" + $scope.id);
             var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
-                console.log("saving...");
+                console.log("Saving entry...");
                 entry.innerHTML = $scope.innerHTML;
                 entry.$save().then(function(ref) {
-                    $("#pSaveStatus").html("Entry added.");
+                    console.log("lang saved");
+                    console.log("saving id /id/" + $scope.id + "...");
+                    var idEntryRef = firebase.database().ref("/id/" + $scope.id);
+                    var idEntry = $firebaseObject(idEntryRef).$loaded().then(function(entry) {
+                        console.log("saving id...");
+                        entry[$scope.lang] = true;
+                        entry.$save().then(function(ref) {
+                            console.log("id saved");
+                            $("#pSaveStatus").html("Entry added.");
+                        }).catch(function(error) {
+                            // TODO: remove l10nEntry/take appropriate action
+                            // to resolve tainted state
+                            console.error("Error saving ID: " + error);
+                            $("#pSaveStatus").html(error);
+                        });
+                    });
                 }).catch(function(error) {
+                    console.error("Error saving language: " + error);
                     $("#pSaveStatus").html(error);
                 });
             });
+            console.groupEnd();
         };
     }
 
