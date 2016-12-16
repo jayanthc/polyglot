@@ -52,3 +52,7 @@ button.pAuthButton:focus {
     color: #FFF3E0;
 }
 
+textarea {
+    width: 100%;
+}
+

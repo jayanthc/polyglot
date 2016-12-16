@@ -1,20 +1,40 @@
 <!-- new entry -->
-<form ng-show="firebaseUser" ng-save="saveEntry()">
+<form ng-show="firebaseUser" ng-submit="saveEntry()" class="form-horizontal">
   <div class="form-group">
-    <label for="pLang">lang</label>
-    <select ng-options="key as value for (key, value) in options"
-      ng-model="lang" class="form-control" required>
-    </select>
+    <label for="pLang" class="col-xs-12 col-sm-12 col-md-2 col-lg-2
+      control-label">Select or enter language</label>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <input ng-model="lang" class="pDatalist" id="pLang" list="pLangs"
+        ng-change="showInnerHTML()" required>
+      <datalist id="pLangs">
+        <option ng-repeat="key in langOptions"
+          value="{{key}}"></option>
+      </datalist>
+    </div>
   </div>
   <div class="form-group">
-    <label for="pID">id</label>
-    <input ng-model="id" id="pID" maxlength="1024" placeholder="Enter element ID" autofocus required>
+    <label for="pID" class="col-xs-12 col-sm-12 col-md-2 col-lg-2
+      control-label">Select or enter ID</label>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <input ng-model="id" class="pDatalist" id="pID" list="pIDs"
+        ng-change="showInnerHTML()" required>
+      <datalist id="pIDs">
+        <option ng-repeat="key in idOptions"
+          value="{{key}}"></option>
+      </datalist>
+    </div>
   </div>
   <div class="form-group">
-    <label for="pInnerHTML">innerHTML</label>
-    <textarea ng-model="innerHTML" id="pInnerHTML" rows="5" maxlength="16384"
-      placeholder="Enter innerHTML" required></textarea>
+    <label for="pInnerHTML" class="col-xs-12 col-sm-12 col-md-2 col-lg-2 control-label">Enter innerHTML</label>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <textarea ng-model="innerHTML" id="pInnerHTML" rows="5" maxlength="16384"
+        placeholder="Enter innerHTML" required></textarea>
+    </div>
   </div>
-  <button type="save" class="btn btn-primary">Save</button>
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10 col-lg-offset-2 col-lg-10">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </div>
 </form>
-<div id="pSubmissionStatus"></div>
+<div id="pSaveStatus"></div>

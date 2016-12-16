@@ -1,4 +1,17 @@
 {
+  "id" : {
+    "test0" : {
+      "Chinese (Simplified)" : true,
+      "English" : true
+    },
+    "test1" : {
+      "Chinese (simplified)" : true,
+      "English" : true
+    },
+    "test2" : {
+      "Chinese (Simplified)" : true
+    }
+  },
   "l10n" : {
     "Chinese (Simplified)" : {
       "test0" : {
@@ -6,6 +19,9 @@
       },
       "test1" : {
         "innerHTML" : "你好吗？"
+      },
+      "test2" : {
+        "innerHTML" : "再见"
       }
     },
     "English" : {
