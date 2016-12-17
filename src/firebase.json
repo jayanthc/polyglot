@@ -1,6 +1,6 @@
 {
   "database": {
-    "rules": "database.rules.json"
+    "rules": "polyglot.rules.json"
   },
   "hosting": {
     "public": "public"
