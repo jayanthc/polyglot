@@ -1,0 +1,45 @@
+{
+  "polyglot": {
+    "defaultLang" : "English",
+    "id" : {
+      "test0" : {
+        "Chinese (Simplified)" : true,
+        "English" : true,
+        "Malayalam" : true
+      },
+      "test1" : {
+        "English" : true
+      },
+      "test2" : {
+        "Chinese (Simplified)" : true,
+      "English" : true
+      }
+    },
+    "l10n" : {
+      "Chinese (Simplified)" : {
+        "test0" : {
+          "innerHTML" : "你好！"
+        },
+        "test2" : {
+          "innerHTML" : "再见！"
+        }
+      },
+      "English" : {
+        "test0" : {
+          "innerHTML" : "Hello!"
+        },
+        "test1" : {
+          "innerHTML" : "How are you?"
+        },
+        "test2" : {
+          "innerHTML" : "Goodbye!"
+        }
+      },
+      "Malayalam" : {
+        "test0" : {
+          "innerHTML" : "നമസ്കാരം!"
+        }
+      }
+    }
+  }
+}

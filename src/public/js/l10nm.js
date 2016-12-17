@@ -94,14 +94,14 @@
             $scope.innerHTML = "";
         });
 
-        var l10nRef = firebase.database().ref("/l10n/").orderByKey();
+        var l10nRef = firebase.database().ref("/polyglot/l10n/").orderByKey();
         l10nRef.on("value", function(snapshot) {
             if (snapshot.val()) {
                 $scope.langOptions = Object.keys(snapshot.val());
             }
             $("#pSaveStatus").html("Languages loaded.");
         });
-        var idRef = firebase.database().ref("/id/").orderByKey();
+        var idRef = firebase.database().ref("/polyglot/id/").orderByKey();
         idRef.on("value", function(snapshot) {
             if (snapshot.val()) {
                 $scope.idOptions = Object.keys(snapshot.val());
@@ -112,8 +112,8 @@
             // read innerHTML
             if ($scope.lang && $scope.id) {
                 console.log($scope.lang);
-                console.log("/l10n/" + $scope.lang + "/" + $scope.id);
-                var l10nEntryRef = firebase.database().ref("/l10n/" + $scope.lang + "/" + $scope.id);
+                console.log("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
+                var l10nEntryRef = firebase.database().ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
                 var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
                     $scope.innerHTML = entry.innerHTML;
                 });
@@ -124,14 +124,14 @@
         };
         $scope.saveEntry = function() {
             console.group("Saving entry");
-            var l10nEntryRef = firebase.database().ref("/l10n/" + $scope.lang + "/" + $scope.id);
+            var l10nEntryRef = firebase.database().ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
             var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
                 console.log("Saving entry...");
                 entry.innerHTML = $scope.innerHTML;
                 entry.$save().then(function(ref) {
                     console.log("lang saved");
-                    console.log("saving id /id/" + $scope.id + "...");
-                    var idEntryRef = firebase.database().ref("/id/" + $scope.id);
+                    console.log("saving id /polyglot/id/" + $scope.id + "...");
+                    var idEntryRef = firebase.database().ref("/polyglot/id/" + $scope.id);
                     var idEntry = $firebaseObject(idEntryRef).$loaded().then(function(entry) {
                         console.log("saving id...");
                         entry[$scope.lang] = true;

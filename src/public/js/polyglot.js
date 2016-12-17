@@ -32,7 +32,7 @@ class I18nText extends HTMLElement {
         this.db = firebase.database();
 
         // read the default language from the database
-        var defLangRef = this.db.ref("/defaultLang");
+        var defLangRef = this.db.ref("/polyglot/defaultLang");
         var obj = this;
         defLangRef.on("value", function(snapshot) {
             console.log("def lang = " + snapshot.val());
@@ -52,7 +52,7 @@ class I18nText extends HTMLElement {
 
     connectedCallback() {
         // get the innerHTML from the Firebase database, based on the tag id
-        var langRef = this.db.ref("/l10n/" + this.activeLang).orderByKey().equalTo(this.id);
+        var langRef = this.db.ref("/polyglot/l10n/" + this.activeLang).orderByKey().equalTo(this.id);
         var obj = this;
         langRef.on("value", function(snapshot) {
             console.log(snapshot.val());
@@ -61,7 +61,7 @@ class I18nText extends HTMLElement {
                 obj.innerHTML = snapshot.val()[obj.id].innerHTML;
             } else {
                 // innerHTML not provided, falling back to default language
-                var langRef = obj.db.ref("/l10n/" + obj.defaultLang).orderByKey().equalTo(obj.id);
+                var langRef = obj.db.ref("/polyglot/l10n/" + obj.defaultLang).orderByKey().equalTo(obj.id);
                 langRef.on("value", function(snapshot) {
                     console.log("x: " + snapshot.val());
                     console.log("x: prev: " + obj.innerHTML);
