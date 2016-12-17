@@ -1,15 +1,17 @@
 {
+  "defaultLang" : "English",
   "id" : {
     "test0" : {
       "Chinese (Simplified)" : true,
-      "English" : true
+      "English" : true,
+      "Malayalam" : true
     },
     "test1" : {
-      "Chinese (simplified)" : true,
       "English" : true
     },
     "test2" : {
-      "Chinese (Simplified)" : true
+      "Chinese (Simplified)" : true,
+      "English" : true
     }
   },
   "l10n" : {
@@ -17,11 +19,8 @@
       "test0" : {
         "innerHTML" : "你好！"
       },
-      "test1" : {
-        "innerHTML" : "你好吗？"
-      },
       "test2" : {
-        "innerHTML" : "再见"
+        "innerHTML" : "再见！"
       }
     },
     "English" : {
@@ -30,6 +29,14 @@
       },
       "test1" : {
         "innerHTML" : "How are you?"
+      },
+      "test2" : {
+        "innerHTML" : "Goodbye!"
+      }
+    },
+    "Malayalam" : {
+      "test0" : {
+        "innerHTML" : "നമസ്കാരം!"
       }
     }
   }

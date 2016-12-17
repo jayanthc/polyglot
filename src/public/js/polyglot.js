@@ -31,12 +31,20 @@ class I18nText extends HTMLElement {
         // get a reference to the database service
         this.db = firebase.database();
 
-        // set the default language
+        // read the default language from the database
+        var defLangRef = this.db.ref("/defaultLang");
+        var obj = this;
+        defLangRef.on("value", function(snapshot) {
+            console.log("def lang = " + snapshot.val());
+            obj.defaultLang = snapshot.val();
+        });
+
+        // set the active language
         if (document.cookie) {
             // from https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
             this.activeLang = document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         } else {
-            this.activeLang = "English";
+            this.activeLang = this.defaultLang;
         }
 
         i18nTexts.push(this);
@@ -48,7 +56,22 @@ class I18nText extends HTMLElement {
         var obj = this;
         langRef.on("value", function(snapshot) {
             console.log(snapshot.val());
-            obj.innerHTML = snapshot.val()[obj.id].innerHTML;
+            console.log("prev: " + obj.innerHTML);
+            if (snapshot.val()) {
+                obj.innerHTML = snapshot.val()[obj.id].innerHTML;
+            } else {
+                // innerHTML not provided, falling back to default language
+                var langRef = obj.db.ref("/l10n/" + obj.defaultLang).orderByKey().equalTo(obj.id);
+                langRef.on("value", function(snapshot) {
+                    console.log("x: " + snapshot.val());
+                    console.log("x: prev: " + obj.innerHTML);
+                    if (snapshot.val()) {
+                        obj.innerHTML = snapshot.val()[obj.id].innerHTML;
+                    } else {
+                        console.error("Fallback innerHTML not provided!");
+                    }
+                });
+            }
         });
     }
 
