@@ -1,6 +1,6 @@
 {
   "polyglot": {
-    "defaultLang" : "English",
+    "defLang" : "English",
     "id" : {
       "test0" : {
         "Chinese (Simplified)" : true,

@@ -32,11 +32,11 @@ class I18nText extends HTMLElement {
         this.db = firebase.database();
 
         // read the default language from the database
-        var defLangRef = this.db.ref("/polyglot/defaultLang");
+        var defLangRef = this.db.ref("/polyglot/defLang");
         var obj = this;
         defLangRef.on("value", function(snapshot) {
             console.log("def lang = " + snapshot.val());
-            obj.defaultLang = snapshot.val();
+            obj.defLang = snapshot.val();
         });
 
         // set the active language
@@ -44,7 +44,7 @@ class I18nText extends HTMLElement {
             // from https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
             this.activeLang = document.cookie.replace(/(?:(?:^|.*;\s*)lang\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         } else {
-            this.activeLang = this.defaultLang;
+            this.activeLang = this.defLang;
         }
 
         i18nTexts.push(this);
@@ -61,7 +61,7 @@ class I18nText extends HTMLElement {
                 obj.innerHTML = snapshot.val()[obj.id].innerHTML;
             } else {
                 // innerHTML not provided, falling back to default language
-                var langRef = obj.db.ref("/polyglot/l10n/" + obj.defaultLang).orderByKey().equalTo(obj.id);
+                var langRef = obj.db.ref("/polyglot/l10n/" + obj.defLang).orderByKey().equalTo(obj.id);
                 langRef.on("value", function(snapshot) {
                     console.log("x: " + snapshot.val());
                     console.log("x: prev: " + obj.innerHTML);

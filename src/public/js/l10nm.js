@@ -3,6 +3,7 @@
         .module("plmi", ["ngRoute", "firebase"])
         .config(ApplicationConfig)
         .controller("AuthCtrl", AuthenticationController)
+        .controller("DefLangCtrl", DefLangController)
         .controller("NewEntryCtrl", NewEntryController);
 
     // config
@@ -25,6 +26,15 @@
             templateUrl: "auth-bar.html",
             controller: "AuthCtrl as ctrl",
             controllerAs: "login"
+        };
+    });
+
+    app.directive("defLang", function() {
+        return {
+            restrict: "E",
+            templateUrl: "def-lang.html",
+            controller: "DefLangCtrl as ctrl",
+            controllerAs: "deflang"
         };
     });
 
@@ -78,8 +88,61 @@
     }
 
 
+    function DefLangController($scope, $firebaseObject) {
+        // used many times
+        var db = firebase.database();
+
+        var l10nRef = db.ref("/polyglot/l10n/").orderByKey();
+        l10nRef.on("value", function(snapshot) {
+            if (snapshot.val()) {
+                $scope.options = Object.keys(snapshot.val());
+                console.log("langs loaded");
+            }
+            $("#pSaveStatus").html("Languages loaded.");
+        });
+
+        // load default language in the default language selector
+        var defLangRef = db.ref("/polyglot/defLang");
+        defLangRef.on("value", function(snapshot) {
+            $scope.defLang = snapshot.val();
+            console.log("loaded deflang:" + $scope.defLang);
+        });
+
+        $scope.changeDefLang = function() {
+            var dbRef = db.ref("/polyglot");
+            $firebaseObject(dbRef).$loaded().then(function(db) {
+                db.defLang = $scope.defLang;
+                db.$save().then(function(ref) {
+                    console.log("saving deflang");
+                }).catch(function(error) {
+                    console.error("Error saving default language.");
+                });
+            });
+        };
+    }
+
+
     function NewEntryController($scope, $firebaseObject, $firebaseArray) {
         $("#pSaveStatus").html("Loading...");
+
+        // used many times
+        var db = firebase.database();
+
+        var l10nRef = db.ref("/polyglot/l10n/").orderByKey();
+        l10nRef.on("value", function(snapshot) {
+            if (snapshot.val()) {
+                $scope.langOptions = Object.keys(snapshot.val());
+                console.log("langs loaded");
+            }
+            $("#pSaveStatus").html("Languages loaded.");
+        });
+        var idRef = db.ref("/polyglot/id/").orderByKey();
+        idRef.on("value", function(snapshot) {
+            if (snapshot.val()) {
+                $scope.idOptions = Object.keys(snapshot.val());
+            }
+            $("#pSaveStatus").html("IDs loaded.");
+        });
 
         // make input+datalist behave like select, based on
         // http://stackoverflow.com/a/37479774/542901
@@ -94,26 +157,12 @@
             $scope.innerHTML = "";
         });
 
-        var l10nRef = firebase.database().ref("/polyglot/l10n/").orderByKey();
-        l10nRef.on("value", function(snapshot) {
-            if (snapshot.val()) {
-                $scope.langOptions = Object.keys(snapshot.val());
-            }
-            $("#pSaveStatus").html("Languages loaded.");
-        });
-        var idRef = firebase.database().ref("/polyglot/id/").orderByKey();
-        idRef.on("value", function(snapshot) {
-            if (snapshot.val()) {
-                $scope.idOptions = Object.keys(snapshot.val());
-            }
-            $("#pSaveStatus").html("IDs loaded.");
-        });
         $scope.showInnerHTML = function() {
             // read innerHTML
             if ($scope.lang && $scope.id) {
                 console.log($scope.lang);
                 console.log("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
-                var l10nEntryRef = firebase.database().ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
+                var l10nEntryRef = db.ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
                 var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
                     $scope.innerHTML = entry.innerHTML;
                 });
@@ -122,16 +171,17 @@
                 $scope.innerHTML = "";
             }
         };
+
         $scope.saveEntry = function() {
             console.group("Saving entry");
-            var l10nEntryRef = firebase.database().ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
+            var l10nEntryRef = db.ref("/polyglot/l10n/" + $scope.lang + "/" + $scope.id);
             var l10nEntry = $firebaseObject(l10nEntryRef).$loaded().then(function(entry) {
                 console.log("Saving entry...");
                 entry.innerHTML = $scope.innerHTML;
                 entry.$save().then(function(ref) {
                     console.log("lang saved");
                     console.log("saving id /polyglot/id/" + $scope.id + "...");
-                    var idEntryRef = firebase.database().ref("/polyglot/id/" + $scope.id);
+                    var idEntryRef = db.ref("/polyglot/id/" + $scope.id);
                     var idEntry = $firebaseObject(idEntryRef).$loaded().then(function(entry) {
                         console.log("saving id...");
                         entry[$scope.lang] = true;

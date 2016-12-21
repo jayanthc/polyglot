@@ -1,0 +1,14 @@
+<!-- default language -->
+<form ng-show="firebaseUser" class="form-horizontal">
+  <div class="form-group">
+    <label for="pDefLang"
+      class="col-xs-12 col-sm-12 col-md-2 col-lg-2 control-label">
+      Select default language</label>
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+      <select ng-options="value for (key, value) in options"
+        ng-model="defLang" ng-change="changeDefLang()" class="form-control"
+        id="pDefLang" required>
+      </select>
+    </div>
+  </div>
+</form>
