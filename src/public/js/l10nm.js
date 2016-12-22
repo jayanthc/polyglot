@@ -11,10 +11,10 @@
     function ApplicationConfig($routeProvider) {
         $routeProvider
             .when("/",
-                    {
-                        templateUrl: "plmi.html",
-                        controller: NewEntryController
-                    })
+                  {
+                      templateUrl: "polyglot.html",
+                      controller: NewEntryController
+                  })
             .otherwise({ redirectTo: "/" });
     }
 
