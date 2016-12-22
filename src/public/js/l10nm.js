@@ -92,20 +92,23 @@
         // used many times
         var db = firebase.database();
 
-        var l10nRef = db.ref("/polyglot/l10n/").orderByKey();
-        l10nRef.on("value", function(snapshot) {
-            if (snapshot.val()) {
-                $scope.options = Object.keys(snapshot.val());
-                console.log("langs loaded");
-            }
-            $("#pSaveStatus").html("Languages loaded.");
-        });
-
         // load default language in the default language selector
         var defLangRef = db.ref("/polyglot/defLang");
-        defLangRef.on("value", function(snapshot) {
+        defLangRef.once("value", function(snapshot) {
             $scope.defLang = snapshot.val();
-            console.log("loaded deflang:" + $scope.defLang);
+            console.log("loaded deflang: " + $scope.defLang);
+
+            var l10nRef = db.ref("/polyglot/l10n/");
+            l10nRef.once("value", function(snapshot) {
+                if (snapshot.val()) {
+                    $scope.options = Object.keys(snapshot.val());
+                    console.log("langs loaded");
+                    $("#pSaveStatus").html("Languages loaded.");
+
+                    // needed to update the select drop-down menu
+                    $scope.$apply();
+                }
+            });
         });
 
         $scope.changeDefLang = function() {
