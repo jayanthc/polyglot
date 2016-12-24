@@ -1,6 +1,6 @@
 (function() {
     var app = angular
-        .module("plmi", ["ngRoute", "firebase"])
+        .module("l10nm", ["ngRoute", "firebase"])
         .controller("AuthCtrl", AuthenticationController)
         .controller("DefLangCtrl", DefLangController)
         .controller("NewEntryCtrl", NewEntryController);
