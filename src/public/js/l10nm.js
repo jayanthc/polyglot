@@ -1,22 +1,9 @@
 (function() {
     var app = angular
         .module("plmi", ["ngRoute", "firebase"])
-        .config(ApplicationConfig)
         .controller("AuthCtrl", AuthenticationController)
         .controller("DefLangCtrl", DefLangController)
         .controller("NewEntryCtrl", NewEntryController);
-
-    // config
-
-    function ApplicationConfig($routeProvider) {
-        $routeProvider
-            .when("/",
-                  {
-                      templateUrl: "polyglot.html",
-                      controller: NewEntryController
-                  })
-            .otherwise({ redirectTo: "/" });
-    }
 
     // directives
 
